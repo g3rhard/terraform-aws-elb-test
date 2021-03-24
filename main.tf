@@ -1,5 +1,5 @@
 provider "aws" {
-  region                  = "us-east-2"
+  region                  = "us-east-1"
   shared_credentials_file = "~/.aws/terraform"
   profile                 = "terraform"
 }
@@ -7,8 +7,8 @@ provider "aws" {
 data "aws_availability_zones" "all" {}
 
 resource "aws_launch_configuration" "example" {
-  image_id        = "ami-0c55b159cbfafe1f0"
-  instance_type   = "t3.micro"
+  image_id        = "ami-09dbd87d7fc293a64"
+  instance_type   = "t2.micro"
   security_groups = [aws_security_group.instance.id]
   user_data = <<-EOF
               #!/bin/bash
@@ -28,18 +28,6 @@ resource "aws_security_group" "instance" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-variable "server_port" {
-  description = "The port the server will use for HTTP requests"
-  type        = number
-  default     = 8080
-}
-
-variable "elb_port" {
-  description = "The port the server will use for ELB"
-  type        = number
-  default     = 80
 }
 
 resource "aws_autoscaling_group" "example" {
